@@ -1827,10 +1827,6 @@ ol.is-list {
   border-bottom: 1px solid rgba(113, 14, 6, 0.5);
 }
 
-.label {
-  min-width: 210px;
-}
-
 .form-info {
   font-size: .8em;
   margin-bottom: 20px;
@@ -2231,6 +2227,10 @@ a[href]:focus {
     -webkit-box-ordinal-group: 203;
     -ms-flex-order: 202;
     order: 202;
+  }
+
+  .label {
+    min-width: 300px;
   }
 
   .file-upload-label strong {

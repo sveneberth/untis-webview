@@ -26,9 +26,11 @@
   .colorizeMsg(@failColor);
 }
 
-.label {
-  min-width: 210px;
-}
+.mq-min(@breakMedium, {
+  .label {
+    min-width: 300px;
+  }
+});
 
 .form-info {
   font-size: .8em;
