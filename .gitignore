@@ -1,0 +1,9 @@
+# ignore xenux config
+xenux-conf.php
+
+# ignore debugging folders
+/logs/
+/mails/
+
+# ignore temp folder
+/tmp/

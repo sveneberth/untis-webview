@@ -1,0 +1,27 @@
+{
+  "info":
+  {
+    "author": "Sven Eberth"
+  },
+  "translations":
+  {
+    "options":"Options",
+    "basic":"Basic",
+    "sites":"Sites",
+
+    "users_can_register": "Everyone can register",
+    "homepage_offline": "Homepage offline",
+    "admin_email": "Administrator eMail",
+    "meta_desc": "Meta description",
+    "meta_keys": "Meta keywords",
+    "meta_author": "Meta author",
+    "hp_name": "Hompage name",
+    "template": "Template",
+    "default_language": "Default language",
+
+    "description of the homepage for meta tags":"Description of the homepage for the meta tags",
+    "keywords of the homepage for meta tags":"Keywords of the homepage for the meta tags",
+
+    "show_meta_info": "Show the creator and time on the site."
+  }
+}

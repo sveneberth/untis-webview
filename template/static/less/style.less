@@ -1,0 +1,215 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,700');
+
+@mainColor: #333;
+@textColor: #333;
+@complementColor: #A22412;
+
+@pageWidth: 1200px;
+
+
+// generic elements
+.btn {
+  .btn;
+}
+.btn-vPrimary {
+  .colorizeBtn(@successColor);
+}
+
+.msg {
+  .msg;
+}
+.msg-vSuccess {
+  .colorizeMsg(@successColor);
+}
+.msg-vError {
+  .colorizeMsg(@failColor);
+}
+
+.label {
+  min-width: 210px;
+}
+
+.form-info {
+  font-size: .8em;
+  margin-bottom: 20px;
+  display: block;
+  margin-top: -20px;
+  margin-left: 15px;
+}
+
+
+.inputGroup:not(.inputGroup-vBlock) .textarea.textarea-vBlock,
+.textarea.textarea-vBlock {width: 100%;}
+
+/*
+ * upload file input
+ * found on: https://tympanus.net/codrops/2015/09/15/styling-customizing-file-inputs-smart-way/
+ */
+.js .file-upload-input {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.file-upload-label {
+  width: 100%;
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  display: inline-block;
+  overflow: hidden;
+  padding: 0.625rem 1.25rem;
+  color: #d3394c;
+  border: 1px solid #d3394c;
+  background-color: #f1e5e6;
+  padding: 0;
+
+  span {
+    min-height: 2em;
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: top;
+  }
+
+  svg {
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
+    fill: currentColor;
+    margin-top: -0.25em;
+    margin-right: 0.25em;
+  }
+
+  strong {
+    height: 100%;
+    color: #f1e5e6;
+    background-color: #d3394c;
+    display: block;
+
+    .mq-min(@breakMedium, {
+      display: inline-block;
+      float: right;
+      });
+  }
+
+  span, strong {padding: 0.625rem 1.25rem;}
+
+  .no-js & {display: none;}
+}
+
+
+.file-upload-input:focus + .file-upload-label,
+.file-upload-input.has-focus + .file-upload-label {
+  outline: 1px dotted #000;
+  outline: -webkit-focus-ring-color auto 5px;
+}
+
+.file-upload-input:focus + .file-upload-label,
+.file-upload-input.has-focus + .file-upload-label,
+.file-upload-input + .file-upload-label:hover {
+  border-color: #722040;
+
+  strong {background-color: #722040;}
+}
+
+
+
+// Project Styling
+.headline {border-bottom: 1px solid #666;}
+
+a[href] {color: lighten(@complementColor, 10%);}
+a[href]:hover {color: lighten(@complementColor, 20%);}
+
+.bar {
+  .bar;
+  background: #000;
+  z-index: 999;
+  transition: .3s ease-in-out background;
+  display: none;
+  position: absolute;
+  top: 50px;
+  left: 0;
+  right: 0;
+  box-shadow: 0 0 7px 0px rgba(0, 0, 0, 0.4);
+
+  .mq-min(@breakMedium, {
+    display: block;
+    top: 0;
+    width: 100vw;
+    box-shadow: none;
+  });
+
+  .barGroup.barGroup-vNav .bar-link {
+    border-bottom: 0;
+    color: #888;
+    border-top: 2px solid transparent;
+    transition-duration: 0.2s;
+    text-transform: uppercase;
+    font-weight: 600;
+    text-align: center;
+
+    .mq-min(@breakMedium, {
+      padding: 25px 15px;
+      text-align: left;
+    });
+
+    &.is-active,
+    &:hover {
+      color: #fff;
+      background: unset;
+      border-bottom: 0;
+      border-top-color: lighten(@complementColor,10%);
+    }
+  }
+}
+
+
+// Hamburger Menu
+.nav-trigger {
+  display: none;
+
+  &:checked ~ .bar {
+    display: block;
+  }
+}
+
+.nav-trigger-btn {
+  display: block;
+  position: absolute;
+  width: 100%;
+  z-index: 99;
+  height: 50px;
+  cursor: pointer;
+  background: #000;
+  color: #fff;
+  cursor: pointer;
+
+  .icon-burger {
+    .pos-centerX;
+    height: 40px;
+    width: 40px;
+    top: 5px;
+    display: block;
+    z-index: 99;
+  }
+
+  .mq-min(@breakMedium, {display:none;});
+}
+
+.bind {
+  background: #fff;
+  top: 50px;
+  box-shadow: 0 0 5px 1px rgba(0,0,0,.1);
+
+  .mq-min(@breakMedium, {
+    top: 0;
+  });
+}
