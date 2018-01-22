@@ -1,6 +1,7 @@
-<div class="checkbox-wrapper">
-	<input type="checkbox" name="{{name}}" id="{{name}}" value="{{value}}" style="{{style}}" {{checked}}>
-	#if(showLabel):
-		<label for="{{name}}">{{label}}</label>
-	#endif
+<div class="inputGroup">
+	<label class="label" for="{{name}}">{{label}}</label>
+	<div class="switch">
+		<input type="checkbox" class="switch-input" name="{{name}}" id="{{name}}" value="{{value}}" style="{{style}}" {{checked}}>
+		<label class="switch-label" for="{{name}}"></label>
+	</div>
 </div>

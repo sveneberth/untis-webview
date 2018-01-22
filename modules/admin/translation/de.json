@@ -22,6 +22,16 @@
     "description of the homepage for meta tags":"Beschreibung der Homepage, die in den Meta-Tags angezeigt wird",
     "keywords of the homepage for meta tags":"Schlüsselwörter der Homepage, die in den Meta-Tags angezeigt werden",
 
-    "show_meta_info": "Verfasser und Zeit auf Seite anzeigen."
+    "show_meta_info": "Verfasser und Zeit auf Seite anzeigen.",
+
+
+    "users":"Nutzer",
+    "home":"Nutzerverzeichnis",
+    "profile":"Profil",
+
+    "here can you add a new user":"Hier kannst du eine neuen Nutzer anlegen.",
+    "here can you edit the user":"Hier kannst du den Nutzer bearbeiten.",
+    "here can you edit your profile":"Hier kannst du dein Profil bearbeiten.",
+    "click to edit user":"Klicken, um den Nutzer zu bearbeiten"
   }
 }

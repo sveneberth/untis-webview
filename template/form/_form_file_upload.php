@@ -1,10 +1,3 @@
-<?php
-/*
-<label for="{{name}}" class="file-upload-button">{{label}}</label>
-<input type="file" name="{{name}}#if(multiple):[]#endif" id="{{name}}" #if(multiple):multiple#endif {# style="display:none;{{style}}" #}>
-*/
-?>
-
 <div class="file-upload-box">
 	<input type="file" name="{{name}}#if(multiple):[]#endif" id="{{name}}" #if(multiple):multiple#endif class="file-upload-input {{class}}" data-multiple-caption="{count} files selected">
 	<label for="{{name}}" class="file-upload-label">

@@ -1,5 +1,5 @@
 <tr>
-	<td style="border: 1px solid #ccc; padding: 3px;">{{date}}</td>
+	{# <td style="border: 1px solid #ccc; padding: 3px;">{{date}}</td> #}
 	<td style="border: 1px solid #ccc; padding: 3px;">{{hour}}</td>
 	<td style="border: 1px solid #ccc; padding: 3px;">{{absent_class}} --> {{substitute_class}}</td>
 	<td style="border: 1px solid #ccc; padding: 3px;">{{absent_teacher}} --> {{substitute_teacher}}</td>

@@ -76,6 +76,8 @@ class profilController extends AbstractController
 			);
 		};
 
+		#TODO: add method to reconfirm before 365 days
+
 		$formFields = array
 		(
 			'firstname' => array

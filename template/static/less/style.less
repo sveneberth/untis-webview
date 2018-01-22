@@ -6,6 +6,8 @@
 @complementColor: #A22412;
 
 @pageWidth: 1200px;
+@svgColor: #929292;
+@svgHoverColor: #157EFB;
 
 
 // generic elements
@@ -14,6 +16,12 @@
 }
 .btn-vPrimary {
   .colorizeBtn(@successColor);
+}
+.btn-vEdit {
+  .invertColorizedBtn(@hintColor);
+  font-size: 1rem;
+  margin-left: 1em;
+  .pos-centerY();
 }
 
 .msg {
@@ -31,6 +39,10 @@
     min-width: 300px;
   }
 });
+
+.grid {
+  .grid(@gridSpace, 12);
+}
 
 .form-info {
   font-size: .8em;
@@ -125,7 +137,7 @@
 
 
 // Project Styling
-.headline {border-bottom: 1px solid #666;}
+.headline {border-bottom: 1px solid #666; position: relative;}
 
 a[href] {color: lighten(@complementColor, 10%);}
 a[href]:hover {color: lighten(@complementColor, 20%);}
@@ -214,4 +226,181 @@ a[href]:hover {color: lighten(@complementColor, 20%);}
   .mq-min(@breakMedium, {
     top: 0;
   });
+}
+
+.sidebar-vPanel {
+
+}
+
+/* MENU PARTS */
+// Prefixes and objects:
+// .menu-
+@menuBackgroundColor: #fafafa;
+@menuActiveColor: @mainColor;
+@menuPrimaryColor: @complementColor;
+@borderRadiusMenu: 4px;
+
+.menu-list {
+  list-style: none;
+  .shd; // default shadow class.
+  display: flex;
+  flex-direction: column;
+  margin: 1em 0;
+  border-radius: @borderRadiusMenu;
+  .mq-min(@breakMedium, {font-size: .9rem;})
+}
+
+a.menu-link {
+  display: block;
+  box-sizing: border-box;
+  padding: 10px 20px;
+  color: contrast(@menuBackgroundColor, @textColor, @invTextColor);
+  background-color: @menuBackgroundColor;
+  border: 1px solid darken(@menuBackgroundColor,15%);
+  border-top-width: 0;
+  transition: all .3s ease;
+  width: 100%;
+  height: 100%;
+
+  .menu-item:first-of-type & {
+    border-top-width: 1px;
+    border-radius: @borderRadiusMenu @borderRadiusMenu 0 0;
+  }
+  .menu-item:last-of-type & {
+    border-radius: 0 0 @borderRadiusMenu @borderRadiusMenu;
+  }
+  &:hover {
+    background-color: lighten(@menuBackgroundColor,5%);
+  }
+  &.is-primary {
+    color: contrast(@menuPrimaryColor, @textColor, @invTextColor);
+    background-color: @menuPrimaryColor;
+  }
+  &.is-active {
+    /*color: contrast(@menuActiveColor, @textColor, @invTextColor);
+    background-color: @menuActiveColor;*/
+    border-left: 5px solid red;
+    padding-left: 16px;
+    font-weight: bold;
+  }
+  &.is-primary:hover,
+  &.is-active:hover {
+   /* background-color: lighten(@menuActiveColor,5%);*/
+  }
+  &.is-busy,
+  &.is-loading,
+  &[aria-busy=true] {
+    cursor: progress;
+    & .single-spinner {
+      margin-top: 0;
+    }
+  }
+}
+
+.mainPanel {
+  margin: 1em 0;
+}
+
+
+
+.actionbar {
+  margin: 0 0 1em;
+
+  .select, .btn {
+    float: left;
+    margin: 0;
+  }
+  .btn {margin-left: 5px;}
+  .select {width: 250px;}
+  .select:not(:first-child) {margin-left: 10px;}
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  tr:not(:last-child) {
+    border-bottom: 1px solid #ccc;
+  }
+  th, td {
+    padding: 5px 10px;
+  }
+  .table-head td,
+  .table-head th {
+    font-weight: 200;
+    border-bottom: 1px solid #999;
+  }
+
+  .header {
+    background-repeat: no-repeat;
+    background-position: center right;
+    cursor: pointer;
+    &:not(.headerSortDown):not(.headerSortUp):hover {
+      background-image: url(../img/table-bg.gif);
+    }
+  }
+  .headerSortUp {
+    background-image: url(../img/table-asc.gif);
+  }
+  .headerSortDown {
+    background-image: url(../img/table-desc.gif);
+  }
+
+  .column-select {width: 5%;}
+  .column-id {width: 5%;}
+  .column-date {width: 12%;}
+  .column-actions {width: 10%;position: relative;}
+
+  .column-select input {margin: 0;}
+  .view-btn {
+    display: block;
+    position: absolute;
+    right: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .remove-btn {
+    display: block;
+    height: 20px;
+    width: 20px;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    svg {
+      width: 100%;
+      height: 100%;
+      fill: @svgColor;
+    }
+    &:hover svg {
+      fill: @svgHoverColor;
+    }
+  }
+}
+
+.amount-entries {
+  float: right;
+  font-size: .9em;
+  color: lighten(@textColor, 20%);
+}
+
+a.btn-new,
+a.btn-new:visited,
+a.btn-new:link,
+.btn-new {
+  border: 1px solid #999;
+  box-shadow: inset 0 1px 2px 0 rgba(0, 0, 0, .1);
+  display: inline-block;
+  font-size: .9rem;
+  margin-left: 1em;
+  padding: 5px 8px;
+  text-decoration: none;
+  transition: ease border .4s, ease background .2s;
+  .pos-centerY();
+  &:focus,
+  &:hover {
+    background: #2580a2;
+    border-color: #244394;
+    color: #e5e5e5;
+  }
 }

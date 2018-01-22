@@ -22,6 +22,15 @@
     "description of the homepage for meta tags":"Description of the homepage for the meta tags",
     "keywords of the homepage for meta tags":"Keywords of the homepage for the meta tags",
 
-    "show_meta_info": "Show the creator and time on the site."
+    "show_meta_info": "Show the creator and time on the site.",
+
+    "users":"Users",
+    "home":"user dictionary",
+    "profile":"profile",
+
+    "here can you add a new user":"Here can you add a new user.",
+    "here can you edit the user":"Here can you edit the user.",
+    "here can you edit your profile":"Here can you edit your profile.",
+    "click to edit user":"Click, to edit user"
   }
 }
