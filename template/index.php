@@ -31,21 +31,22 @@
 		<label for="nav-trigger" class="nav-trigger-btn"><?= file_get_contents(TEMPLATE_PATH . '/static/img/burger.svg') ?></label>
 		<nav class="bar">
 			<div class="barGroup barGroup-vCenter barGroup-vNav">
-				<a class="bar-link <?= @$site == 'home' ? 'is-active' : '' ?>" href="{{MAIN_URL}}/">Home</a>
-				<a class="bar-link <?= @$site == 'ueber' ? 'is-active' : '' ?>" href="{{MAIN_URL}}/ueber"><?= __('about') ?></a>
+				<a class="bar-link <?= $app->site == 'home' ? 'is-active' : '' ?>" href="{{MAIN_URL}}/">Home</a>
+				<a class="bar-link <?= $app->site == 'ueber' ? 'is-active' : '' ?>" href="{{MAIN_URL}}/ueber"><?= __('about') ?></a>
 				<?php
 					if (!$app->user->isLogin())
 					{
 						?>
-							<a class="bar-link <?= @$site == 'login' ? 'is-active' : '' ?>" href="{{MAIN_URL}}/login">Login</a>
+							<a class="bar-link <?= $app->site == 'login' ? 'is-active' : '' ?>" href="{{MAIN_URL}}/login">Login</a>
 						<?php
 					}
 					else
 					{
 						?>
-							<a class="bar-link <?= @$site == 'vertretungsplan' ? 'is-active' : '' ?>" href="{{MAIN_URL}}/vertretungsplan"><?= __('substituteplan') ?></a>
-							<a class="bar-link <?= @$site == 'profil' ? 'is-active' : '' ?>" href="{{MAIN_URL}}/profil"><?= __('profile') ?></a>
-							<a class="bar-link <?= @$site == 'admin' ? 'is-active' : '' ?>" href="{{MAIN_URL}}/admin"><?= __('admin') ?></a>
+							<a class="bar-link <?= $app->site == 'vertretungsplan' ? 'is-active' : '' ?>" href="{{MAIN_URL}}/vertretungsplan"><?= __('substituteplan') ?></a>
+							<a class="bar-link <?= $app->site == 'profil' ? 'is-active' : '' ?>" href="{{MAIN_URL}}/profil"><?= __('profile') ?></a>
+							<a class="bar-link <?= $app->site == 'admin' ? 'is-active' : '' ?>" href="{{MAIN_URL}}/admin"><?= __('admin') ?></a>
+							<a class="bar-link <?= $app->site == 'login' && @_GET['task'] == 'logout' ? 'is-active' : '' ?>" href="{{MAIN_URL}}/login?task=logout"><?= __('logout') ?></a>
 						<?php
 					}
 				?>

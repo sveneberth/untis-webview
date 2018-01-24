@@ -281,10 +281,10 @@ class profilController extends AbstractController
 				$mail->setSender(XENUX_MAIL);
 				$mail->setReplyTo($app->getOption('admin_email'));
 				$mail->addAdress($app->user->userInfo->email, $app->user->userInfo->firstname . ' ' . $app->user->userInfo->lastname);
-				$mail->setSubject(__('confirm registration on', $app->getOption('hp_name')));
+				$mail->setSubject(__('confirm account on', $app->getOption('hp_name')));
 				$mail->setMessage(
 					'<p>' . __('helloUser', $app->user->userInfo->firstname) . '</p>' .
-					'<p>' . __('open link to confirm registration', MAIN_URL) . '<br>' .
+					'<p>' . __('open link to confirm account', MAIN_URL) . '<br>' .
 					'<a href="' . str_replace('&amp;', '&', $confirmlink) . '">' . $confirmlink . '</a></p>' .
 					'<p>' . __('not registered by self', MAIN_URL) . '</p>'
 				);
@@ -298,7 +298,7 @@ class profilController extends AbstractController
 				else
 				{
 					$msgTemplate = new template(MAIN_PATH.'/template/form/_form_success_msg.php');
-					$msgTemplate->setVar('suc_message', __('please confirm registration'));
+					$msgTemplate->setVar('suc_message', __('please confirm account'));
 					$this->template->setVar('messageConfirm', $msgTemplate->render());
 				}
 			}

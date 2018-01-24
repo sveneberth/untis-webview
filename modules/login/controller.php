@@ -11,52 +11,56 @@ class loginController extends AbstractController
 		$task = isset($_GET['task']) ? $_GET['task'] : '';
 
 		$action = ($task == 'logout' || $task == 'login' || empty($task) ||
-			!in_array($task, ['register', 'forgotpassword', 'resetpassword', 'setpassword', 'confirm'])
+			!in_array($task, ['register', 'forgotpassword', 'resetpassword', 'setpassword', 'confirm', 'requestConfirm'])
 			) ? 'login' : $task;
 
 
-		$template = new template(MAIN_PATH . '/modules/' . $this->modulename . '/login.php', ['action'=>$action]);
+		$this->template = new template(MAIN_PATH . '/modules/' . $this->modulename . '/login.php', ['action'=>$action]);
 
-		$template->setVar('TEMPLATE_URL', MAIN_URL . '/template');
-		$template->setVar('homepage_name', $app->getOption('hp_name'));
-		$template->setVar('message', '');
-		$template->setVar('form', '');
+		$this->template->setVar('TEMPLATE_URL', MAIN_URL . '/template');
+		$this->template->setVar('homepage_name', $app->getOption('hp_name'));
+		$this->template->setVar('message', '');
+		$this->template->setVar('form', '');
 
 		switch ($action) {
 			case 'register':
 				$app->addJS(MAIN_URL . '/js/modules/' . $this->modulename . '/register.js');
-				$this->registerAction($template);
-				$template->setVar('page_name', __('register'));
+				$this->registerAction();
+				$this->template->setVar('page_name', __('register'));
 				break;
 			case 'forgotpassword':
-				$this->forgotpasswordAction($template);
-				$template->setVar('page_name', __('forgotPassword'));
+				$this->forgotpasswordAction();
+				$this->template->setVar('page_name', __('forgotPassword'));
 				break;
 			case 'resetpassword':
-				$this->resetpasswordAction($template);
-				$template->setVar('page_name', __('resetpassword'));
+				$this->resetpasswordAction();
+				$this->template->setVar('page_name', __('resetpassword'));
 				break;
 			case 'setpassword':
-				$this->setPasswordAction($template);
-				$template->setVar('page_name', __('setpassword'));
+				$this->setPasswordAction();
+				$this->template->setVar('page_name', __('setpassword'));
+				break;
+			case 'requestConfirm':
+				$this->requestConfirmAction();
+				$this->template->setVar('page_name', __('requestConfirm'));
 				break;
 			case 'confirm':
-				$this->confirmAction($template);
-				$template->setVar('page_name', __('confirm'));
+				$this->confirmAction();
+				$this->template->setVar('page_name', __('confirm'));
 				break;
 			case 'login':
 			default:
-				$template->setVar('page_name', __('login'));
-				$this->loginAction($template, $task);
+				$this->template->setVar('page_name', __('login'));
+				$this->loginAction($task);
 				break;
 		};
 
 
-		echo $template->render();
+		echo $this->template->render();
 		return true;
 	}
 
-	private function loginAction(&$template, $task)
+	private function loginAction($task)
 	{
 		global $app, $XenuxDB;
 
@@ -68,7 +72,7 @@ class loginController extends AbstractController
 		if ($task == 'logout')
 		{
 			$app->user->setLogout();
-			$template->setIfCondition('logout', true);
+			$this->template->setIfCondition('logout', true);
 		}
 
 		$formFields = array
@@ -110,9 +114,28 @@ class loginController extends AbstractController
 				{
 					$userInfo = $app->user->userInfo;
 
+					// times in unixtime
+					$lastConfirmed   = mysql2date('U', $userInfo->last_confirmed);
+					$confirmValidity = $app->getOption('confirmValidity') * 60 * 60 * 24;
+					$today           = strtotime(date('Y-m-d'));
+
+					$remain          = ($lastConfirmed + $confirmValidity - $today) / (60 * 60 * 24);
+
 					if (is_null($userInfo->last_confirmed))
 					{
-						$template->setVar('message', '<p>' . __('not confirmed') . '</p>');
+						$msgTemplate = new template(MAIN_PATH.'/template/form/_form_error_msg.php');
+						$msgTemplate->setVar('err_message', __('not confirmed') . '<br><a href="'.REQUEST_URL.'?task=requestConfirm&id='.$userInfo->id.'">'.__('click here to request a new mail').'</a>');
+
+						$this->template->setVar('message', $msgTemplate->render());
+						return false;
+					}
+
+					if ($remain <= 0)
+					{
+						$msgTemplate = new template(MAIN_PATH.'/template/form/_form_error_msg.php');
+						$msgTemplate->setVar('err_message', __('account expired') . '<br><a href="'.REQUEST_URL.'?task=requestConfirm&id='.$userInfo->id.'">'.__('Please reconfirm your Account').'</a>');
+
+						$this->template->setVar('message', $msgTemplate->render());
 						return false;
 					}
 
@@ -153,16 +176,16 @@ class loginController extends AbstractController
 			}
 		}
 
-		$template->setVar('form', $loginform->getForm());
+		$this->template->setVar('form', $loginform->getForm());
 	}
 
-	private function registerAction(&$template)
+	private function registerAction()
 	{
 		global $app, $XenuxDB;
 
 		if (!parse_bool($app->getOption('users_can_register')))
 		{
-			$template->setVar('message', '<p class="info">' . __('registrationClosed') . '</p>');
+			$this->template->setVar('message', '<p class="info">' . __('registrationClosed') . '</p>');
 			return false;
 		}
 
@@ -315,11 +338,11 @@ class loginController extends AbstractController
 	/*							$msgTemplate = new template($this->getFormTemplateURL('_form_error_msg.php'));
 								$msgTemplate->setVar('err_message', $message);
 								$messages .= $msgTemplate->render();*/
-								$template->setVar('message', '<p>' . __('message couldnt sent') . '</p>');
+								$this->template->setVar('message', '<p>' . __('message couldnt sent') . '</p>');
 							}
 							else
 							{
-								$template->setVar('message', '<p>' . __('please confirm registration') . '</p>');
+								$this->template->setVar('message', '<p>' . __('please confirm registration') . '</p>');
 							}
 
 							return false;
@@ -350,10 +373,10 @@ class loginController extends AbstractController
 			}
 		}
 
-		$template->setVar('form',  $registerform->getForm());
+		$this->template->setVar('form',  $registerform->getForm());
 	}
 
-	private function forgotpasswordAction(&$template)
+	private function forgotpasswordAction()
 	{
 		global $app, $XenuxDB;
 
@@ -386,7 +409,7 @@ class loginController extends AbstractController
 				$userinfo = $app->user->userInfo;
 				if (empty($userinfo->password)) // user has not set his password
 				{
-					$template->setVar('message', __('please set your first password'));
+					$this->template->setVar('message', __('please set your first password'));
 					return false;
 				}
 				$token = generateRandomString();
@@ -420,23 +443,23 @@ class loginController extends AbstractController
 
 				if (!$mail->send())
 				{
-					$template->setVar('message', '<p>' . __('message couldnt sent') . '</p>');
+					$this->template->setVar('message', '<p>' . __('message couldnt sent') . '</p>');
 				}
 				else
 				{
-					$template->setVar('message', '<p>' . __('password reset sent to mail') . '</p>');
+					$this->template->setVar('message', '<p>' . __('password reset sent to mail') . '</p>');
 				}
 			}
 			else
 			{
-				$template->setVar('message', '<p>' . __('clouldnt match account with email', $data['email']) . '</p>');
+				$this->template->setVar('message', '<p>' . __('clouldnt match account with email', $data['email']) . '</p>');
 			}
 		}
 
-		$template->setVar('form',  $forgotpasswordform->getForm());
+		$this->template->setVar('form',  $forgotpasswordform->getForm());
 	}
 
-	private function resetpasswordAction(&$template)
+	private function resetpasswordAction()
 	{
 		global $app, $XenuxDB;
 
@@ -499,8 +522,8 @@ class loginController extends AbstractController
 
 					if ($return)
 					{
-						$template->setVar('message', '<p>' . __('passsword reset successful') . '</p>');
-						$template->setVar('form', '');
+						$this->template->setVar('message', '<p>' . __('passsword reset successful') . '</p>');
+						$this->template->setVar('form', '');
 						return false;
 					}
 					else
@@ -511,11 +534,11 @@ class loginController extends AbstractController
 				}
 				else
 				{
-					$template->setVar('message', '<p>' . __('entered passwords not equal') . '<p>');
+					$this->template->setVar('message', '<p>' . __('entered passwords not equal') . '<p>');
 				}
 			}
 
-			$template->setVar('form',  $forgotpasswordform->getForm());
+			$this->template->setVar('form',  $forgotpasswordform->getForm());
 		}
 		else
 		{
@@ -523,7 +546,7 @@ class loginController extends AbstractController
 		}
 	}
 
-	private function setPasswordAction(&$template)
+	private function setPasswordAction()
 	{
 		global $app, $XenuxDB;
 
@@ -596,7 +619,7 @@ class loginController extends AbstractController
 							'<p>' . __('saved password msg mail', MAIN_URL) . '</p>');
 						$mail->send();
 
-						$template->setVar('message', '<p>' . __('saved password msg') . '</p>');
+						$this->template->setVar('message', '<p>' . __('saved password msg') . '</p>');
 						$app->user->setLogin();
 
 						header('Location: ' . MAIN_URL . (isset($_GET['redirectTo']) ? $_GET['redirectTo'] : ''));
@@ -609,11 +632,11 @@ class loginController extends AbstractController
 				}
 				else
 				{
-					$template->setVar('message', '<p>' . __('entered passwords not equal') . '<p>');
+					$this->template->setVar('message', '<p>' . __('entered passwords not equal') . '<p>');
 				}
 			}
 
-			$template->setVar('form',  $forgotpasswordform->getForm());
+			$this->template->setVar('form',  $forgotpasswordform->getForm());
 		}
 		else
 		{
@@ -621,7 +644,7 @@ class loginController extends AbstractController
 		}
 	}
 
-	private function confirmAction(&$template)
+	private function confirmAction()
 	{
 		global $app, $XenuxDB;
 
@@ -655,9 +678,71 @@ class loginController extends AbstractController
 
 			if ($return)
 			{
-				$template->setIfCondition('confirmSuccessful', true);
+				$this->template->setIfCondition('confirmSuccessful', true);
 				$app->user->setLogin();
 				header('Refresh:5; url=' . MAIN_URL, true, 303);
+			}
+		}
+		else
+		{
+			ErrorPage::view(405, __('error occurred, please review validity of link'));
+		}
+	}
+
+	private function requestConfirmAction()
+	{
+		global $app, $XenuxDB;
+
+		$user = $XenuxDB->getEntry('users', [
+			'where'=> [
+				'id' => @$_GET['id'],
+			]
+		]);
+
+		if ($user)
+		{
+			$token = generateRandomString();
+
+			$return = $XenuxDB->Update('users', [
+				'verifykey'    => $token
+			],
+			[
+				'id' => $user->id
+			]);
+
+			if ($return !== false)
+			{
+				$confirmlink = MAIN_URL . '/login/?task=confirm&amp;id=' . $user->id . '&amp;token=' . $token;
+
+				$mail = new mailer;
+				$mail->setSender(XENUX_MAIL);
+				$mail->setReplyTo($app->getOption('admin_email'));
+				$mail->addAdress($user->email, $user->firstname . ' ' . $user->lastname);
+				$mail->setSubject(__('confirm registration on', $app->getOption('hp_name')));
+				$mail->setMessage(
+					'<p>' . __('helloUser', $user->firstname) . '</p>' .
+					'<p>' . __('open link to confirm registration', MAIN_URL) . '<br>' .
+					'<a href="' . str_replace('&amp;', '&', $confirmlink) . '">' . $confirmlink . '</a></p>' .
+					'<p>' . __('not registered by self', MAIN_URL) . '</p>'
+				);
+
+				if (!$mail->send())
+				{
+					$msgTemplate = new template(MAIN_PATH.'/template/form/_form_error_msg.php');
+					$msgTemplate->setVar('err_message', __('message couldnt sent'));
+					$this->template->setVar('message', $msgTemplate->render());
+				}
+				else
+				{
+					$msgTemplate = new template(MAIN_PATH.'/template/form/_form_success_msg.php');
+					$msgTemplate->setVar('suc_message', __('please confirm registration'));
+					$this->template->setVar('message', $msgTemplate->render());
+				}
+			}
+			else
+			{
+				log::setPHPError('something went wrong -.-');
+				ErrorPage::view(500);
 			}
 		}
 		else

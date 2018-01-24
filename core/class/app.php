@@ -2,7 +2,7 @@
 class app
 {
 	public $template;
-	private $site;
+	public $site;
 	public $url;
 	public $page_name;
 	public $user;

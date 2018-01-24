@@ -31,6 +31,10 @@
     "forgotPassword info":"Falls du deinen Passwort vergessen hast, kannst du es über einen Link aus der gesendeten E-Mail zurücksetzten.",
     "forgotPassword action info":"Hier kannst du ein neues Passwort für deinen Account festlegen.",
     "setPassword info":"Du musst zuerst dein Passwort festlegen!",
-    "account confirmation successful":"Dein Account wurde bestätigt. Du wirst weitergeleitet!"
+    "account confirmation successful":"Dein Account wurde bestätigt. Du wirst weitergeleitet!",
+    "not confirmed":"Du hast deinen Account noch nicht bestätigt. Öffne dazu den Link in der E-Mail, welche wir dir zugesendet haben.",
+    "click here to request a new mail": "Klicke hier um eine neue Bestätigungsmail anzufordern",
+    "account expired":"Die Gültigkeit deines Accounts ist abgelaufen. Du musst ihn erneut bestätigen um dich einloggen zu können.",
+    "Please reconfirm your Account": "Klicke hier um deinen Account erneut zu bestätigen."
   }
 }

@@ -77,4 +77,11 @@
 		</div>
 	<?php endif; ?>
 
+	<?php if($action == 'requestConfirm'): ?>
+		<div class="login-box box-shadow">
+			<h2>{{page_name}}</h2>
+			{{message}}
+		</div>
+	<?php endif; ?>
+
 </div>
