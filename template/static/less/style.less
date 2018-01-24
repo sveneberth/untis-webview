@@ -45,6 +45,15 @@
 
 .grid {
   .grid(@gridSpace, 12);
+
+  .grid-col-3-vResponsive {
+    width: 100%;
+    flex: none;
+
+    .mq-min(@breakMedium, {
+      width: 25%;
+    });
+  }
 }
 
 .form-info {

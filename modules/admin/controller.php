@@ -19,6 +19,9 @@ class adminController extends AbstractController
 		if (!$app->user->isLogin())
 			ErrorPage::view(401);
 
+		if ($app->user->userInfo->role < 2)
+			ErrorPage::view(403);
+
 		// append translations
 		translator::appendTranslations(MAIN_PATH.'/modules/'.$this->modulename.'/translation/');
 
@@ -242,6 +245,15 @@ class adminController extends AbstractController
 				'label'    => __('allowed_domains'),
 				'value'    => implode("\r\n", json_decode($app->getOption('allowed_domains')))
 			),
+			'confirmValidity' => array
+			(
+				'type'       => 'number',
+				'required'   => true,
+				'label'      => __('confirmValidity'),
+				'value'      => $app->getOption('confirmValidity'),
+				'min_number' => 1,
+				'info'       => __('time after the user has to reconfirm his account')
+			),
 			'submit' => array
 			(
 				'type'  => 'submit',
@@ -305,17 +317,33 @@ class adminController extends AbstractController
 			$this->messages[] = '<p class="box-shadow info-message ok">'.__('removedSuccessful').'</p>';
 		}
 
-		if (isset($_GET['action']) && in_array($_GET['action'], ['remove'])
+		if (isset($_GET['action']) && in_array($_GET['action'], ['remove', 'makeAdmin', 'makeUser'])
 			&& isset($_GET['item']) && is_array($_GET['item']))
 		{
-			foreach ($_GET['item'] as $item) {
+			foreach ($_GET['item'] as $item)
+			{
 				if (is_numeric($item)) {
-					switch ($_GET['action']) {
+					switch ($_GET['action'])
+					{
 						case 'remove':
 							$XenuxDB->delete('users', [
 								'where' => [
 									'id' => $item
 								]
+							]);
+							break;
+						case 'makeAdmin':
+							$XenuxDB->Update('users', [
+								'role' => 2
+							], [
+								'id' => $item
+							]);
+							break;
+						case 'makeUser':
+							$XenuxDB->Update('users', [
+								'role' => 1
+							], [
+								'id' => $item
 							]);
 							break;
 					}
@@ -364,7 +392,7 @@ class adminController extends AbstractController
 	<td class="column-select"><input type="checkbox" name="item[]" value="' . $user->id . '"></td>
 	<td class="column-id">' . $user->id . '</td>
 	<td class="column-text">
-		<a class="edit" href="{{MAIN_URL}}/admin/users/edit/' . $user->id . '" title="' . __('click to edit user') . '">' . $user->email . '</a>
+		<a class="edit" href="{{MAIN_URL}}/admin/users/edit/' . $user->id . '" title="' . __('click to edit user') . '">' . $user->email . ($user->role >= 2 ? '<span title="'.__('admin').'">*</span>' : '') . '</a>
 	</td>
 	<td class="column-text">' . $user->firstname . '</td>
 	<td class="column-text">' . $user->lastname . '</td>
@@ -462,6 +490,26 @@ class adminController extends AbstractController
 				'required' => true,
 				'label'    => __('email'),
 				'value'    => @$user->email,
+			),
+			'role' => array
+			(
+				'type'     => 'select',
+				'required' => true,
+				'label'    => __('role'),
+				'options'  => array
+				(
+					array
+					(
+						'value' => 1,
+						'label' => __('role:user')
+					),
+					array
+					(
+						'value' => 2,
+						'label' => __('role:admin')
+					)
+				),
+				'value'    => @$user->role
 			),
 			'type' => array
 			(
@@ -576,6 +624,7 @@ class adminController extends AbstractController
 					'lastname'     => $data['lastname'],
 					'email'        => $data['email'],
 					'type'         => $data['type'],
+					'role'         => $data['role'],
 					'class'        => $data['class'],
 					'abbreviation' => $data['abbreviation'],
 					'password'     => '',
@@ -645,6 +694,7 @@ class adminController extends AbstractController
 					'firstname'    => $data['firstname'],
 					'lastname'     => $data['lastname'],
 					'email'        => $data['email'],
+					'role'         => $data['role'],
 					'type'         => $data['type'],
 					'class'        => $data['class'],
 					'abbreviation' => $data['abbreviation'],

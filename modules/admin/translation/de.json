@@ -29,6 +29,14 @@
     "here can you add a new user":"Hier kannst du einen neuen Nutzer anlegen.",
     "here can you edit the user":"Hier kannst du den Nutzer bearbeiten.",
     "here can you edit your profile":"Hier kannst du dein Profil bearbeiten.",
-    "click to edit user":"Klicken, um den Nutzer zu bearbeiten"
+    "click to edit user":"Klicken, um den Nutzer zu bearbeiten",
+
+    "role": "Rolle",
+    "role:user": "Nutzer",
+    "role:admin": "Administrator",
+    "makeUser": "zum Nutzer machen",
+    "makeAdmin": "zum Administrator machen",
+    "confirmValidity": "Gültigkeit der Bestätigung",
+    "time after the user has to reconfirm his account": "Zeit (in Tagen), nach der Nutzer seinen Account erneut bestätigen muss."
   }
 }

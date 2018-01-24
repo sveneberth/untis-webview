@@ -2124,6 +2124,13 @@ ol.is-list {
   margin-left: 75%;
 }
 
+.grid .grid-col-3-vResponsive {
+  width: 100%;
+  -webkit-box-flex: 0;
+  -ms-flex: none;
+  flex: none;
+}
+
 .form-info {
   font-size: .8em;
   margin-bottom: 20px;
@@ -2783,6 +2790,10 @@ a.btn-new:link:focus,
 
   .grid-col {
     padding: 20px;
+  }
+
+  .grid .grid-col-3-vResponsive {
+    width: 25%;
   }
 
   .file-upload-label strong {

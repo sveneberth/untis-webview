@@ -1,6 +1,6 @@
 
 <div class="grid grid-row">
-	<div class="grid-col grid-col-3">
+	<div class="grid-col grid-col-3-vResponsive">
 		<div class="sidebar sidebar-vLeft sidebar-vPanel">
 			<ul class="menu-list">
 				<li class="menu-item"><a class="menu-link <?= $method == 'upload' ? ' is-active' : '' ?>"

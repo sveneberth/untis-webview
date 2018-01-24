@@ -45,7 +45,15 @@
 						?>
 							<a class="bar-link <?= $app->site == 'vertretungsplan' ? 'is-active' : '' ?>" href="{{MAIN_URL}}/vertretungsplan"><?= __('substituteplan') ?></a>
 							<a class="bar-link <?= $app->site == 'profil' ? 'is-active' : '' ?>" href="{{MAIN_URL}}/profil"><?= __('profile') ?></a>
-							<a class="bar-link <?= $app->site == 'admin' ? 'is-active' : '' ?>" href="{{MAIN_URL}}/admin"><?= __('admin') ?></a>
+							<?php
+								if ($app->user->userInfo->role >= 2)
+								{
+							?>
+									<a class="bar-link <?= $app->site == 'admin' ? 'is-active' : '' ?>" href="{{MAIN_URL}}/admin"><?= __('admin') ?></a>
+							<?php
+								}
+							?>
+
 							<a class="bar-link <?= $app->site == 'login' && @_GET['task'] == 'logout' ? 'is-active' : '' ?>" href="{{MAIN_URL}}/login?task=logout"><?= __('logout') ?></a>
 						<?php
 					}
