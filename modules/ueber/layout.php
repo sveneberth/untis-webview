@@ -1,5 +1,5 @@
 <section class="section">
-	<h1 class="headline">Über</h1>
+	<h1 class="headline">{{headlinePrefix}}{{headline}}{{headlineSuffix}}</h1>
 	<p>Hier stellen wir dir das Projekt vor!</p>
 
 	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod

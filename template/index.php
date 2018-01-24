@@ -32,7 +32,7 @@
 		<nav class="bar">
 			<div class="barGroup barGroup-vCenter barGroup-vNav">
 				<a class="bar-link <?= @$site == 'home' ? 'is-active' : '' ?>" href="{{MAIN_URL}}/">Home</a>
-				<a class="bar-link <?= @$site == 'ueber' ? 'is-active' : '' ?>" href="{{MAIN_URL}}/ueber">Über</a>
+				<a class="bar-link <?= @$site == 'ueber' ? 'is-active' : '' ?>" href="{{MAIN_URL}}/ueber"><?= __('about') ?></a>
 				<?php
 					if (!$app->user->isLogin())
 					{
@@ -43,11 +43,9 @@
 					else
 					{
 						?>
-							<a class="bar-link <?= @$site == 'vertretung' ? 'is-active' : '' ?>" href="{{MAIN_URL}}/vertretung">Vertretungen</a>
-							<a class="bar-link <?= @$site == 'profil' ? 'is-active' : '' ?>" href="{{MAIN_URL}}/profil">Profil</a>
-							<a class="bar-link <?= @$site == 'admin' ? 'is-active' : '' ?>" href="{{MAIN_URL}}/admin">Admin</a>
-							<a class="bar-link <?= @$site == 'upload' ? 'is-active' : '' ?>" href="{{MAIN_URL}}/upload">Upload</a>
-							<a class="bar-link <?= @$site == 'logout' ? 'is-active' : '' ?>" href="{{MAIN_URL}}/login?task=logout">Logout</a>
+							<a class="bar-link <?= @$site == 'vertretungsplan' ? 'is-active' : '' ?>" href="{{MAIN_URL}}/vertretungsplan"><?= __('substituteplan') ?></a>
+							<a class="bar-link <?= @$site == 'profil' ? 'is-active' : '' ?>" href="{{MAIN_URL}}/profil"><?= __('profile') ?></a>
+							<a class="bar-link <?= @$site == 'admin' ? 'is-active' : '' ?>" href="{{MAIN_URL}}/admin"><?= __('admin') ?></a>
 						<?php
 					}
 				?>

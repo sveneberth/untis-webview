@@ -12,11 +12,15 @@ class profilController extends AbstractController
 			ErrorPage::view(401);
 
 		// append translations
-		translator::appendTranslations(MAIN_PATH . '/modules/'.$this->modulename.'/translation/');
+		translator::appendTranslations(MAIN_PATH.'/modules/'.$this->modulename.'/translation/');
+		$app->addJS(MAIN_URL . '/js/modules/' . $this->modulename . '/profil.js');
+
+		$this->template = new template(MAIN_PATH.'/modules/'.$this->modulename.'/layout.php');
 
 		$this->userEdit();
+		$this->ConfirmForm();
 
-
+		echo $this->template->render();
 		$this->page_name = __('profile');
 	}
 
@@ -24,22 +28,18 @@ class profilController extends AbstractController
 	{
 		global $XenuxDB, $app;
 
-		$app->addJS(MAIN_URL . '/js/modules/' . $this->modulename . '/profil.js');
-
-		$template = new template(MAIN_PATH . '/modules/' . $this->modulename . '/layout_edit.php');
-		$template->setVar('form', $this->getEditForm($template));
+		$this->template->setVar('form', $this->getEditForm());
 
 		if (isset($_GET['savingSuccess']) && parse_bool($_GET['savingSuccess']) == true)
 			$this->messages[] = '<p class="box-shadow info-message ok">'.__('savedSuccessful').'</p>';
 		if (isset($_GET['savingSuccess']) && parse_bool($_GET['savingSuccess']) == false)
 			$this->messages[] = '<p class="box-shadow info-message error">'.__('savingFailed').'</p>';
 
-		$template->setVar('messages', implode("\n", $this->messages));
+		$this->template->setVar('messages', implode("\n", $this->messages));
 
-		echo $template->render();
 	}
 
-	private function getEditForm(&$template)
+	private function getEditForm()
 	{
 		global $XenuxDB, $app;
 
@@ -243,5 +243,70 @@ class profilController extends AbstractController
 			}
 		}
 		return $form->getForm();
+	}
+
+	private function ConfirmForm()
+	{
+		global $XenuxDB, $app;
+
+		// times in unixtime
+		$lastConfirmed   = mysql2date('U', $app->user->userInfo->last_confirmed);
+		$confirmValidity = $app->getOption('confirmValidity') * 60 * 60 * 24;
+		$today           = strtotime(date('Y-m-d'));
+
+		$remain          = ($lastConfirmed + $confirmValidity - $today) / (60 * 60 * 24);
+
+		$this->template->setVar('datelastConfirmed', mysql2date('d.m.Y', $app->user->userInfo->last_confirmed));
+		$this->template->setVar('remainingDays', $remain);
+		$this->template->setVar('confirmValidity', $app->getOption('confirmValidity'));
+		$this->template->setVar('messageConfirm', '');
+
+
+		if (@$_GET['task'] == 'confirmRequest')
+		{
+			$token = generateRandomString();
+
+			$return = $XenuxDB->Update('users', [
+				'verifykey'    => $token
+			],
+			[
+				'id' => $app->user->userInfo->id
+			]);
+
+			if ($return !== false)
+			{
+				$confirmlink = MAIN_URL . '/login/?task=confirm&amp;id=' . $app->user->userInfo->id . '&amp;token=' . $token;
+
+				$mail = new mailer;
+				$mail->setSender(XENUX_MAIL);
+				$mail->setReplyTo($app->getOption('admin_email'));
+				$mail->addAdress($app->user->userInfo->email, $app->user->userInfo->firstname . ' ' . $app->user->userInfo->lastname);
+				$mail->setSubject(__('confirm registration on', $app->getOption('hp_name')));
+				$mail->setMessage(
+					'<p>' . __('helloUser', $app->user->userInfo->firstname) . '</p>' .
+					'<p>' . __('open link to confirm registration', MAIN_URL) . '<br>' .
+					'<a href="' . str_replace('&amp;', '&', $confirmlink) . '">' . $confirmlink . '</a></p>' .
+					'<p>' . __('not registered by self', MAIN_URL) . '</p>'
+				);
+
+				if (!$mail->send())
+				{
+					$msgTemplate = new template(MAIN_PATH.'/template/form/_form_error_msg.php');
+					$msgTemplate->setVar('err_message', __('message couldnt sent'));
+					$this->template->setVar('messageConfirm', $msgTemplate->render());
+				}
+				else
+				{
+					$msgTemplate = new template(MAIN_PATH.'/template/form/_form_success_msg.php');
+					$msgTemplate->setVar('suc_message', __('please confirm registration'));
+					$this->template->setVar('messageConfirm', $msgTemplate->render());
+				}
+			}
+			else
+			{
+				log::setPHPError('something went wrong -.-');
+				ErrorPage::view(500);
+			}
+		}
 	}
 }

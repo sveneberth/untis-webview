@@ -8,7 +8,7 @@ class ueberController extends AbstractController
 		$template = new template(MAIN_PATH . '/modules/' . $this->modulename . '/layout.php');
 		echo $template->render();
 
-		$this->page_name = 'Ueber';
+		$this->page_name = __('about');
 
 		return true;
 	}

@@ -5,31 +5,28 @@
   },
   "translations":
   {
-    "options":"Einstellungen",
-    "basic":"System",
+    "settings":"Einstellungen",
+    "upload":"Hochladen",
     "sites":"Seiten",
+    "users":"Nutzer",
+    "home":"Nutzerverzeichnis",
+    "profile":"Profil",
 
-    "users_can_register": "Jeder darf sich Registrieren",
+    "users_can_register": "Nutzer dürfen sich Registrieren",
     "homepage_offline": "Homepage Offline",
     "admin_email": "Administrator E-Mail",
     "meta_desc": "Meta Beschreibung",
     "meta_keys": "Meta Schlüsselwörter",
     "meta_author": "Meta Autor",
-    "hp_name": "Hompage Name",
     "template": "Template",
     "default_language": "Standard Sprache",
 
     "description of the homepage for meta tags":"Beschreibung der Homepage, die in den Meta-Tags angezeigt wird",
     "keywords of the homepage for meta tags":"Schlüsselwörter der Homepage, die in den Meta-Tags angezeigt werden",
 
-    "show_meta_info": "Verfasser und Zeit auf Seite anzeigen.",
+    "upload a export file to update substitute plan": "Lade eine Export-Datei im csv-Format (DIF-Export) hoch um die Vetretungsplandaten zu aktualisieren.",
 
-
-    "users":"Nutzer",
-    "home":"Nutzerverzeichnis",
-    "profile":"Profil",
-
-    "here can you add a new user":"Hier kannst du eine neuen Nutzer anlegen.",
+    "here can you add a new user":"Hier kannst du einen neuen Nutzer anlegen.",
     "here can you edit the user":"Hier kannst du den Nutzer bearbeiten.",
     "here can you edit your profile":"Hier kannst du dein Profil bearbeiten.",
     "click to edit user":"Klicken, um den Nutzer zu bearbeiten"

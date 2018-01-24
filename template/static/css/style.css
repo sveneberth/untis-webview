@@ -1787,6 +1787,54 @@ ol.is-list {
   z-index: 201;
 }
 
+.btn-vDanger {
+  color: #f32c1e;
+  border: 1px solid #ea1c0d;
+  -webkit-box-shadow: 0 1px 3px rgba(244, 67, 54, 0.12), 0 1px 2px rgba(244, 67, 54, 0.24);
+  box-shadow: 0 1px 3px rgba(244, 67, 54, 0.12), 0 1px 2px rgba(244, 67, 54, 0.24);
+}
+
+.btn-vDanger:link,
+.btn-vDanger:visited {
+  color: #f32c1e;
+}
+
+.btn-vDanger:hover,
+.btn-vDanger:focus {
+  color: #ffffff;
+  background-color: #f55a4e;
+  border: 1px solid #f32c1e;
+  -webkit-box-shadow: 0 3px 6px rgba(244, 67, 54, 0.16), 0 3px 6px rgba(244, 67, 54, 0.23);
+  box-shadow: 0 3px 6px rgba(244, 67, 54, 0.16), 0 3px 6px rgba(244, 67, 54, 0.23);
+}
+
+.btn-vDanger:active,
+.btn-vDanger.is-active {
+  color: #ffffff;
+  background-color: #f77066;
+  border: 1px solid #f55a4e;
+}
+
+.btn-vDanger.is-disabled:hover,
+.btn-vDanger:disabled:hover,
+.btn-vDanger[aria-disabled=true]:hover,
+.btn-vDanger.is-disabled,
+.btn-vDanger:disabled,
+.btn-vDanger[aria-disabled=true],
+.btn-vDanger.is-disabled:focus,
+.btn-vDanger:disabled:focus,
+.btn-vDanger[aria-disabled=true]:focus {
+  color: #f6d0cd;
+  background-color: #ea938c;
+  border: 1px dashed #f6d0cd;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.btnGroup .btn-vDanger {
+  z-index: 201;
+}
+
 .msg {
   position: relative;
   padding: 15px;

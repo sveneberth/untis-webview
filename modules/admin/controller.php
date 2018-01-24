@@ -22,24 +22,26 @@ class adminController extends AbstractController
 		// append translations
 		translator::appendTranslations(MAIN_PATH.'/modules/'.$this->modulename.'/translation/');
 
-		$template = new template(MAIN_PATH.'/modules/'.$this->modulename.'/layout.php', [
+		$this->template = new template(MAIN_PATH.'/modules/'.$this->modulename.'/layout.php', [
 			'modulename' => $this->modulename,
 			'method' => $this->url[1]
 		]);
 
-		$template->setVar('messages', '');
-		$template->setVar('text', '');
+		$this->template->setVar('messages', '');
+		$this->template->setVar('text', '');
 
 		if ($this->url[1] == 'upload')
 		{
-			$template->setVar('form', $this->getUploadForm($template));
-			$template->setVar('text', '<p>' . __('upload a export file to update substitute plan') . '</p>');
+			$this->template->setVar('main', $this->getUploadForm($this->template));
+			$this->template->setVar('text', '<p>' . __('upload a export file to update substitute plan') . '</p>');
 
 			$app->addJS(MAIN_URL . '/js/modules/' . $this->modulename . '/upload.js');
+			$this->page_name = __('upload');
 		}
 		elseif ($this->url[1] == 'settings')
 		{
-			$template->setVar('form', $this->getSettingsForm($template));
+			$this->template->setVar('main', $this->getSettingsForm($this->template));
+			$this->page_name = __('settings');
 		}
 		elseif ($this->url[1] == 'users')
 		{
@@ -48,7 +50,7 @@ class adminController extends AbstractController
 
 			if (@$this->url[2] == 'home')
 			{
-				$template->setVar('form', $this->getUserHome($template));
+				$this->template->setVar('main', $this->getUserHome($this->template));
 				#$this->userHome();
 			}
 			elseif (@$this->url[2] == 'edit')
@@ -56,7 +58,7 @@ class adminController extends AbstractController
 				if (isset($this->url[3]) && is_numeric($this->url[3]) && !empty($this->url[3]))
 				{
 					$this->editUserID = $this->url[3];
-					$template->setVar('form', $this->getUserEdit());
+					$this->template->setVar('main', $this->getUserEdit());
 					$app->addJS(MAIN_URL . '/js/modules/' . $this->modulename . '/user_edit.js');
 				}
 				else
@@ -64,26 +66,15 @@ class adminController extends AbstractController
 					throw new Exception(__('isWrong', 'users ID'));
 				}
 			}
-			elseif (@$this->url[2] == 'profile')
-			{
-				$this->editUserID = $app->user->userInfo->id;
-				$template->setVar('form', $this->getUserEdit());
-				$app->addJS(MAIN_URL . '/js/modules/' . $this->modulename . '/user_edit.js');
-
-				$this->page_name = __('profile');
-			}
 			elseif (@$this->url[2] == 'new')
 			{
-				$template->setVar('form', $this->getUserEdit(true));
+				$this->template->setVar('main', $this->getUserEdit(true));
 				$app->addJS(MAIN_URL . '/js/modules/' . $this->modulename . '/user_edit.js');
 			}
 			else
 			{
-				throw new Exception("404 - $this->modulename template not found");
+				throw new Exception("404 - $this->modulename method <i>{$this->url[1]} / {$this->url[2]}</i> not found");
 			}
-
-			#TODO: build it
-			//$template->setVar('form', $this->getUsersForm($template));
 		}
 		else
 		{
@@ -91,14 +82,12 @@ class adminController extends AbstractController
 		}
 
 		if (isset($_GET['savingSuccess']) && parse_bool($_GET['savingSuccess']) == true)
-			$template->setVar("messages", '<p class="box-shadow info-message ok">'.__('savedSuccessful').'</p>');
+			$this->template->setVar("messages", '<p class="box-shadow info-message ok">'.__('savedSuccessful').'</p>');
 		if (isset($_GET['savingSuccess']) && parse_bool($_GET['savingSuccess']) == false)
-			$template->setVar("messages", '<p class="box-shadow info-message error">'.__('savingFailed').'</p>');
+			$this->template->setVar("messages", '<p class="box-shadow info-message error">'.__('savingFailed').'</p>');
 
 
-		echo $template->render();
-
-		$this->page_name = __('options');
+		echo $this->template->render();
 
 		return true;
 	}
@@ -190,7 +179,7 @@ class adminController extends AbstractController
 	}
 
 
-	private function getSettingsForm(&$template)
+	private function getSettingsForm()
 	{
 		global $XenuxDB, $app;
 
@@ -300,15 +289,12 @@ class adminController extends AbstractController
 	}
 
 
-
-
 	private function getUserHome()
 	{
 		global $app, $XenuxDB;
 
 		$template = new template(MAIN_PATH.'/modules/'.$this->modulename.'/layout_home.php');
 
-		#FIXME: removed user remains as author in pages/post/etc. This sucks
 		if (isset($_GET['remove']) && is_numeric($_GET['remove']) && !empty($_GET['remove']))
 		{
 			$XenuxDB->delete('users', [
@@ -352,11 +338,13 @@ class adminController extends AbstractController
 
 		$app->addJS(TEMPLATE_URL . '/static/js/jquery.tablesorter.min.js');
 		$app->addJS(MAIN_URL . '/modules/' . $this->modulename . '/user.js');
+
 		$this->page_name = __('home');
 		$this->headlineSuffix = '<a class="btn btn-vEdit" href="{{MAIN_URL}}/admin/users/new">' . __('new') . '</a>';
 
 		return $template->render();
 	}
+
 
 	private function getUserTable()
 	{
@@ -395,14 +383,10 @@ class adminController extends AbstractController
 
 	private function getUserEdit($new=false)
 	{
-		$template = new template(MAIN_PATH.'/modules/'.$this->modulename.'/layout_edit.php', [
-			'profileEdit' => @$this->url[1] == 'profile'
-		]);
+		$template = new template(MAIN_PATH.'/modules/'.$this->modulename.'/layout_edit.php');
 
 		$template->setVar('form', $this->getUserEditForm($template, $new));
-
 		$template->setIfCondition('new', $new);
-		$template->setIfCondition('profileEdit', @$this->url[1] == 'profile');
 
 		if (isset($_GET['savingSuccess']) && parse_bool($_GET['savingSuccess']) == true)
 			$this->messages[] = '<p class="box-shadow info-message ok">'.__('savedSuccessful').'</p>';
@@ -415,6 +399,7 @@ class adminController extends AbstractController
 
 		return $template->render();
 	}
+
 
 	private function getUserEditForm(&$template, $new=false)
 	{

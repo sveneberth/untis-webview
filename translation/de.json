@@ -114,6 +114,13 @@
     "afternoon": "nachmittags",
     "evening": "abends",
     "a year and a half": "eineinhalb Jahren",
+    "Mon": "Mo",
+    "Tue": "Di",
+    "Wed": "Mi",
+    "Thu": "Do",
+    "Fri": "Fr",
+    "Sat": "Sa",
+    "Sun": "So",
 
     "gotoPage":"gehe zur Seite",
 
@@ -126,6 +133,10 @@
     "abbreviation": "Kürzel",
     "student": "Schüler",
     "teacher": "Lehrer",
+    "admin": "Admin",
+    "substituteplan": "Vertretungsplan",
+    "about": "Über",
+    "last confirmed":"Zuletzt bestätigt",
 
 
 

@@ -19,7 +19,7 @@
 			<h1 class="headline">{{headlinePrefix}}{{headline}}{{headlineSuffix}}</h1>
 			{{messages}}
 			{{text}}
-			{{form}}
+			{{main}}
 		</div>
 	</div>
 </div>
