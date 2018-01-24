@@ -416,3 +416,69 @@ a.btn-new:link,
     color: #e5e5e5;
   }
 }
+
+.table {
+  width: 100%;
+
+  .table-row {
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+
+    &.table-headRow {
+      display: none;
+      .mq-min(@breakMedium, {display: flex;});
+    }
+
+    &.table-headRow .table-column {font-weight: bold;}
+
+    &:not(:last-of-type) {
+      margin-bottom: 1em;
+      .mq-min(@breakMedium, {margin-bottom: 0;});
+    }
+
+    &:not(:first-of-type):not(:nth-of-type(2)):after {
+      border-top: 1px solid #ccc;
+      width: 100%;
+      margin: 0 auto;
+      margin-bottom: 1em;
+      display: block;
+      content: '';
+      .mq-min(@breakMedium, {display: none;});
+    }
+
+    .mq-min(@breakMedium, {
+      &:first-of-type .table-column {border-top: 1px solid #ccc;}
+    });
+  }
+
+  .table-column {
+    padding: 3px;
+    flex-flow: row wrap;
+
+    .mq-min(@breakMedium, {
+      &:first-of-type {border-left: 1px solid #ccc;}
+    });
+
+    &.hour {width: 50%; order: 1; font-weight: bold; &:after {content: '. Std'; display: inline;}}
+    &.subject {width: 50%; order: 2; text-align: right; font-weight: bold;}
+    &.class {width: 50%; order: 3;}
+    &.teacher {width: 50%; order: 4; text-align: right;}
+    &.room {width: 50%; order: 5;}
+    &.type {width: 50%; order: 6; text-align: right;}
+    &.text {width: 100%; order: 7; text-align: center;}
+
+    .mq-min(@breakMedium, {
+      border-right: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+
+      &.hour {flex: 1 10%; order: 1; text-align: left; font-weight: inherit; &:after {content: unset;}}
+      &.class {flex: 1 15%; order: 2; text-align: left;}
+      &.teacher {flex: 1 10%; order: 3; text-align: left;}
+      &.subject {flex: 1 10%; order: 4; text-align: left; font-weight: inherit;}
+      &.room {flex: 1 10%; order: 5; text-align: left;}
+      &.type {flex: 1 20%; order: 6; text-align: left;}
+      &.text {flex: 1 25%; order: 7; text-align: left;}
+    });
+  }
+}

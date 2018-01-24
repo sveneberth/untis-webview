@@ -37,6 +37,6 @@
     "makeUser": "zum Nutzer machen",
     "makeAdmin": "zum Administrator machen",
     "confirmValidity": "Gültigkeit der Bestätigung",
-    "time after the user has to reconfirm his account": "Zeit (in Tagen), nach der Nutzer seinen Account erneut bestätigen muss."
+    "time after the user has to reconfirm his account": "Zeit (in Tagen), nach der der Nutzer seinen Account erneut bestätigen muss."
   }
 }
