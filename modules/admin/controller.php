@@ -277,11 +277,11 @@ class adminController extends AbstractController
 
 			if ($success)
 			{
-				header('Location: ' . MAIN_URL . '/admin/?savingSuccess=true');
+				header('Location: ' . MAIN_URL . '/admin/settings/?savingSuccess=true');
 			}
 			else
 			{
-				header('Location: ' . MAIN_URL . '/admin/?savingSuccess=false');
+				header('Location: ' . MAIN_URL . '/admin/settings/?savingSuccess=false');
 			}
 
 		}

@@ -44,8 +44,7 @@ class user
 	public function createPasswordHash($password)
 	{
 		return password_hash($password, PASSWORD_DEFAULT, [
-			'cost' => COST,
-			'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM)
+			'cost' => COST
 		]);
 	}
 

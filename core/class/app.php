@@ -21,10 +21,6 @@ class app
 		$this->user = new User;
 		$this->url  = explode('/', strtolower($url));
 
-		$this->template = $this->getOption('template');
-		if (isset($_GET['useTemplate']) && full($_GET['useTemplate']) && DEBUG_MODE)
-			$this->template = $_GET['useTemplate'];
-
 		if (isset($_GET['lang']))
 		{
 			translator::setLanguage($_GET['lang']);
