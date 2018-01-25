@@ -2650,6 +2650,7 @@ a.btn-new:link:focus,
   -webkit-box-direction: normal;
   -ms-flex-flow: row wrap;
   flex-flow: row wrap;
+  word-break: break-all;
 }
 
 .table .table-column.hour {
@@ -2690,14 +2691,14 @@ a.btn-new:link:focus,
 }
 
 .table .table-column.room {
-  width: 50%;
+  width: 30%;
   -webkit-box-ordinal-group: 6;
   -ms-flex-order: 5;
   order: 5;
 }
 
 .table .table-column.type {
-  width: 50%;
+  width: 70%;
   -webkit-box-ordinal-group: 7;
   -ms-flex-order: 6;
   order: 6;

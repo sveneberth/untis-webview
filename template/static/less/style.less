@@ -455,6 +455,7 @@ a.btn-new:link,
   .table-column {
     padding: 3px;
     flex-flow: row wrap;
+    word-break: break-all;
 
     .mq-min(@breakMedium, {
       &:first-of-type {border-left: 1px solid #ccc;}
@@ -464,8 +465,8 @@ a.btn-new:link,
     &.subject {width: 50%; order: 2; text-align: right; font-weight: bold;}
     &.class {width: 50%; order: 3;}
     &.teacher {width: 50%; order: 4; text-align: right;}
-    &.room {width: 50%; order: 5;}
-    &.type {width: 50%; order: 6; text-align: right;}
+    &.room {width: 30%; order: 5;}
+    &.type {width: 70%; order: 6; text-align: right;}
     &.text {width: 100%; order: 7; text-align: center;}
 
     .mq-min(@breakMedium, {
