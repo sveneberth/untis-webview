@@ -1,6 +1,9 @@
 <?php
 class vertretungsplanController extends AbstractController
 {
+	private $showAll = false;
+	private $userIsStudent;
+
 	public function run()
 	{
 		global $XenuxDB, $app;
@@ -8,10 +11,19 @@ class vertretungsplanController extends AbstractController
 		if (!$app->user->isLogin())
 			ErrorPage::view(401);
 
+		if (parse_bool(@$_GET['showAll']) === true)
+			$this->showAll = true;
+
+		$this->userIsStudent = $app->user->userInfo->type == 'student';
+
+		// append translations
+		translator::appendTranslations(MAIN_PATH.'/modules/'.$this->modulename.'/translation/');
+
+		$app->addJS(MAIN_URL . '/js/modules/' . $this->modulename . '/vertretungsplan.js');
+
 		$this->template = new template(MAIN_PATH.'/modules/'.$this->modulename.'/layout.php');
-
 		$this->template->setVar('main', $this->getSubstitutePlan());
-
+		$this->template->setVar('filterSwitch', $this->getFilter());
 		echo $this->template->render();
 
 		$this->page_name = __('substituteplan');
@@ -21,15 +33,44 @@ class vertretungsplanController extends AbstractController
 
 	private function getSubstitutePlan()
 	{
-		global $XenuxDB;
+		global $app, $XenuxDB;
+
+		if ($this->userIsStudent && !$this->showAll)
+		{
+			$where = [
+				'AND' => [
+					'##date[>=]' => 'NOW()',
+					'OR' => [
+						'absent_class[~]' => $app->user->userInfo->class,
+						'substitute_class[~]' => $app->user->userInfo->class
+					]
+				]
+			];
+		}
+		elseif (!$this->userIsStudent && !$this->showAll) // teacher
+		{
+			$where = [
+				'AND' => [
+					'##date[>=]' => 'NOW()',
+					'OR' => [
+						'absent_teacher[~]' => $app->user->userInfo->abbreviation,
+						'substitute_teacher[~]' => $app->user->userInfo->abbreviation
+					]
+				]
+			];
+		}
+		else
+		{
+			$where = [
+				'##date[>=]' => 'NOW()'
+			];
+		}
 
 		$dates = $XenuxDB->getList('substitute_plan', [
 			'columns' => 'date',
 			'order' => 'date ASC',
 			'group' => 'date',
-			'where' => [
-				'##date[>=]' => 'NOW()'
-			]
+			'where' => $where
 		]);
 
 		$sections = '';
@@ -39,15 +80,45 @@ class vertretungsplanController extends AbstractController
 
 			$tableTemplate->setVar('date', __(mysql2date('D', $date->date)) . mysql2date(', d.m.Y', $date->date));
 
+
+			if ($this->userIsStudent && !$this->showAll)
+			{
+				$where = [
+					'AND' => [
+						'date' => $date->date,
+						'OR' => [
+							'absent_class[~]' => $app->user->userInfo->class,
+							'substitute_class[~]' => $app->user->userInfo->class
+						]
+					]
+				];
+			}
+			elseif (!$this->userIsStudent && !$this->showAll) // teacher
+			{
+				$where = [
+					'AND' => [
+						'date' => $date->date,
+						'OR' => [
+							'absent_teacher[~]' => $app->user->userInfo->abbreviation,
+							'substitute_teacher[~]' => $app->user->userInfo->abbreviation
+						]
+					]
+				];
+			}
+			else
+			{
+				$where = [
+					'date' => $date->date,
+				];
+			}
+
 			$entries = $XenuxDB->getList('substitute_plan', [
 				'order' => [
 					'date ASC',
 					'absent_class ASC',
 					'hour ASC'
 				],
-				'where' => [
-					'date' => $date->date
-				]
+				'where' => $where
 			]);
 
 			if ($entries)
@@ -113,5 +184,21 @@ class vertretungsplanController extends AbstractController
 		}
 
 		return $sections;
+	}
+
+	private function getFilter()
+	{
+		global $app, $XenuxDB;
+
+		$template = new template(MAIN_PATH . '/template/form/_form_checkbox.php');
+		$template->setVar('label', __('show all substitutes'));
+		$template->setVar('name', 'showAll-switch');
+		$template->setVar('class', 'showAll-switch');
+		$template->setVar('classGroup', 'showAll-switch-group');
+		$template->setVar('style', '');
+		$template->setVar('checked', $this->showAll ? 'checked="checked"' : '');
+		$template->setVar('value', 'true');
+
+		return $template->render();
 	}
 }

@@ -3095,6 +3095,10 @@ a.btn-new:link:focus,
     order: 7;
     text-align: left;
   }
+
+  .showAll-switch-group {
+    float: right !important;
+  }
 }
 
 @media (min-width: 75em) {
