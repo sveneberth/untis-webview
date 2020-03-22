@@ -79,6 +79,43 @@ class adminController extends AbstractController
 				throw new Exception("404 - $this->modulename method <i>{$this->url[1]} / {$this->url[2]}</i> not found");
 			}
 		}
+		elseif ($this->url[1] == 'news')
+		{
+
+			if (!isset($this->url[2]) || empty($this->url[2]))
+				header('Location: '.MAIN_URL.'/'.$this->modulename.'/news/home');
+
+			if (@$this->url[2] == 'home')
+			{
+				$this->template->setVar('main', $this->getUserHome($this->template));
+				#$this->userHome();
+			}
+			elseif (@$this->url[2] == 'edit')
+			{
+				if (isset($this->url[3]) && is_numeric($this->url[3]) && !empty($this->url[3]))
+				{
+					$this->editUserID = $this->url[3];
+					$this->template->setVar('main', $this->getUserEdit());
+					$app->addJS(MAIN_URL . '/js/modules/' . $this->modulename . '/user_edit.js');
+				}
+				else
+				{
+					throw new Exception(__('isWrong', 'users ID'));
+				}
+			}
+			elseif (@$this->url[2] == 'new')
+			{
+				$this->template->setVar('main', $this->getUserEdit(true));
+				$app->addJS(MAIN_URL . '/js/modules/' . $this->modulename . '/user_edit.js');
+			}
+			else
+			{
+				throw new Exception("404 - $this->modulename method <i>{$this->url[1]} / {$this->url[2]}</i> not found");
+			}
+
+		#	$this->template->setVar('main', $this->getSettingsForm($this->template));
+			$this->page_name = __('news');
+		}
 		else
 		{
 			throw new Exception("404 - $this->modulename method <i>{$this->url[1]}</i> not found");

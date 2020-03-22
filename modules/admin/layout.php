@@ -6,11 +6,15 @@
 				<li class="menu-item"><a class="menu-link <?= $method == 'upload' ? ' is-active' : '' ?>"
 					href="{{MAIN_URL}}/<?= $modulename ?>/upload"><?= __('upload') ?></a></li>
 
+				<li class="menu-item"><a class="menu-link <?= $method == 'news' ? ' is-active' : '' ?>"
+					href="{{MAIN_URL}}/<?= $modulename ?>/news"><?= __('news') ?></a></li>
+
 				<li class="menu-item"><a class="menu-link <?= $method == 'settings' ? ' is-active' : '' ?>"
 					href="{{MAIN_URL}}/<?= $modulename ?>/settings"><?= __('settings') ?></a></li>
 
 				<li class="menu-item"><a class="menu-link <?= $method == 'users' ? ' is-active' : '' ?>"
 					href="{{MAIN_URL}}/<?= $modulename ?>/users"><?= __('users') ?></a></li>
+
 			</ul>
 		</div>
 	</div>
